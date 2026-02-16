@@ -1,0 +1,147 @@
+{
+  "name": "velixar",
+  "displayName": "Velixar AI Memory",
+  "description": "Persistent memory for AI assistants — browse, search, and manage memories from your IDE",
+  "version": "0.1.0",
+  "publisher": "velixarai",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VelixarAi/velixar-vscode"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["AI", "Other"],
+  "keywords": ["ai", "memory", "context", "velixar", "assistant"],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "velixar",
+          "title": "Velixar Memory",
+          "icon": "media/brain.svg"
+        }
+      ]
+    },
+    "views": {
+      "velixar": [
+        {
+          "id": "velixar.usage",
+          "name": "Usage"
+        },
+        {
+          "id": "velixar.memories",
+          "name": "Memories"
+        },
+        {
+          "id": "velixar.search",
+          "name": "Search",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "velixar.setApiKey",
+        "title": "Velixar: Set API Key"
+      },
+      {
+        "command": "velixar.storeMemory",
+        "title": "Velixar: Store Selection as Memory"
+      },
+      {
+        "command": "velixar.searchMemories",
+        "title": "Velixar: Search Memories"
+      },
+      {
+        "command": "velixar.refreshMemories",
+        "title": "Velixar: Refresh Memories",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "velixar.deleteMemory",
+        "title": "Velixar: Delete Memory",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "velixar.copyMemory",
+        "title": "Velixar: Copy Memory Content",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "velixar.insertMemory",
+        "title": "Velixar: Insert Memory at Cursor"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "velixar.refreshMemories",
+          "when": "view == velixar.memories",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "velixar.copyMemory",
+          "when": "view == velixar.memories",
+          "group": "inline"
+        },
+        {
+          "command": "velixar.deleteMemory",
+          "when": "view == velixar.memories"
+        },
+        {
+          "command": "velixar.insertMemory",
+          "when": "view == velixar.memories"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "velixar.storeMemory",
+          "when": "editorHasSelection",
+          "group": "velixar"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Velixar",
+      "properties": {
+        "velixar.apiUrl": {
+          "type": "string",
+          "default": "https://t4xrnwgo7f.execute-api.us-east-1.amazonaws.com/v1",
+          "description": "Velixar API endpoint URL"
+        },
+        "velixar.defaultTier": {
+          "type": "number",
+          "default": 2,
+          "enum": [0, 1, 2, 3],
+          "enumDescriptions": [
+            "Tier 0 — Pinned (Redis, instant recall)",
+            "Tier 1 — Session (Redis, recent context)",
+            "Tier 2 — Semantic (Qdrant, vector search)",
+            "Tier 3 — Organization (Milvus, shared)"
+          ],
+          "description": "Default memory tier for new memories"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.3.0"
+  }
+}

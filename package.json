@@ -2,8 +2,8 @@
   "name": "velixar",
   "displayName": "Velixar AI Memory",
   "description": "Persistent memory for AI assistants — browse, search, and manage memories from your IDE",
-  "version": "0.1.0",
-  "publisher": "velixarai",
+  "version": "0.2.0",
+  "publisher": "VelixarAIInc",
   "icon": "media/icon.png",
   "repository": {
     "type": "git",
@@ -12,8 +12,8 @@
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["AI", "Other"],
-  "keywords": ["ai", "memory", "context", "velixar", "assistant"],
+  "categories": ["AI", "Machine Learning", "Other"],
+  "keywords": ["ai", "memory", "context", "velixar", "assistant", "org-memory", "agent"],
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
@@ -74,6 +74,14 @@
       {
         "command": "velixar.insertMemory",
         "title": "Velixar: Insert Memory at Cursor"
+      },
+      {
+        "command": "velixar.commitToTeam",
+        "title": "Velixar: Commit Selection to Team Memory"
+      },
+      {
+        "command": "velixar.searchOrgMemories",
+        "title": "Velixar: Search Org Memories"
       }
     ],
     "menus": {
@@ -102,6 +110,11 @@
       "editor/context": [
         {
           "command": "velixar.storeMemory",
+          "when": "editorHasSelection",
+          "group": "velixar"
+        },
+        {
+          "command": "velixar.commitToTeam",
           "when": "editorHasSelection",
           "group": "velixar"
         }

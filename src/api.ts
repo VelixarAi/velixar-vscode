@@ -85,6 +85,20 @@ export class ApiClient {
     const resp = await fetch(`${this.baseUrl}/health`);
     return resp.json() as Promise<{ status: string; qdrant: boolean; redis: boolean }>;
   }
+
+  async commitToTeam(content: string, workspaceId: string, teamId: string, tags?: string[]): Promise<any> {
+    return this.fetch("/org/memory/commit", {
+      method: "POST",
+      body: JSON.stringify({ content, workspace_id: workspaceId, team_id: teamId, tags }),
+    });
+  }
+
+  async searchOrgMemories(query: string, limit = 20): Promise<{ memories: Memory[] }> {
+    return this.fetch("/org/memory/retrieve", {
+      method: "POST",
+      body: JSON.stringify({ query, limit }),
+    });
+  }
 }
 
 export interface Memory {

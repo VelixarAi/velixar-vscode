@@ -155,4 +155,77 @@ export function registerCommands(
       }
     })
   );
+
+  // Commit selection to team memory
+  context.subscriptions.push(
+    vscode.commands.registerCommand("velixar.commitToTeam", async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) return;
+      const selection = editor.document.getText(editor.selection);
+      if (!selection) { vscode.window.showWarningMessage("Select text first"); return; }
+
+      const tags = await vscode.window.showInputBox({
+        prompt: "Tags (comma-separated, optional)",
+        placeHolder: "code, architecture, convention",
+      });
+
+      try {
+        await api.commitToTeam(
+          selection,
+          "", // workspace_id resolved server-side from membership
+          "", // team_id resolved server-side from membership
+          tags ? tags.split(",").map((t) => t.trim()) : undefined
+        );
+        vscode.window.showInformationMessage("Committed to team memory");
+      } catch (e: any) {
+        vscode.window.showErrorMessage(`Velixar: ${e.message}`);
+      }
+    })
+  );
+
+  // Search org memories
+  context.subscriptions.push(
+    vscode.commands.registerCommand("velixar.searchOrgMemories", async () => {
+      const query = await vscode.window.showInputBox({
+        prompt: "Search org memories",
+        placeHolder: "deployment process, coding conventions...",
+      });
+      if (!query) return;
+
+      try {
+        const result = await api.searchOrgMemories(query, 10);
+        if (!result.memories?.length) {
+          vscode.window.showInformationMessage("No org memories found");
+          return;
+        }
+
+        const pick = await vscode.window.showQuickPick(
+          result.memories.map((m) => ({
+            label: m.content.replace(/\n/g, " ").slice(0, 100),
+            detail: `Scope: ${(m as any).scope || "—"} | ${new Date(m.created_at || "").toLocaleDateString()}`,
+            memory: m,
+          })),
+          { placeHolder: `${result.memories.length} org memories` }
+        );
+
+        if (pick) {
+          const action = await vscode.window.showQuickPick(
+            ["Copy to clipboard", "Insert at cursor", "Open in editor"],
+            { placeHolder: "What do you want to do?" }
+          );
+          if (action === "Copy to clipboard") {
+            await vscode.env.clipboard.writeText(pick.memory.content);
+          } else if (action === "Insert at cursor") {
+            const ed = vscode.window.activeTextEditor;
+            if (ed) { ed.edit((edit) => edit.insert(ed.selection.active, pick.memory.content)); }
+          } else if (action === "Open in editor") {
+            const doc = await vscode.workspace.openTextDocument({ content: pick.memory.content, language: "markdown" });
+            await vscode.window.showTextDocument(doc);
+          }
+        }
+      } catch (e: any) {
+        vscode.window.showErrorMessage(`Velixar: ${e.message}`);
+      }
+    })
+  );
 }

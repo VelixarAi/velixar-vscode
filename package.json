@@ -2,7 +2,7 @@
   "name": "velixar",
   "displayName": "Velixar AI Memory",
   "description": "Persistent memory for AI assistants — browse, search, and manage memories from your IDE",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "VelixarAIInc",
   "icon": "media/icon.png",
   "repository": {
@@ -125,7 +125,7 @@
       "properties": {
         "velixar.apiUrl": {
           "type": "string",
-          "default": "https://t4xrnwgo7f.execute-api.us-east-1.amazonaws.com/v1",
+          "default": "https://api.velixarai.com",
           "description": "Velixar API endpoint URL"
         },
         "velixar.defaultTier": {
@@ -133,10 +133,10 @@
           "default": 2,
           "enum": [0, 1, 2, 3],
           "enumDescriptions": [
-            "Tier 0 — Pinned (Redis, instant recall)",
-            "Tier 1 — Session (Redis, recent context)",
-            "Tier 2 — Semantic (Qdrant, vector search)",
-            "Tier 3 — Organization (Milvus, shared)"
+            "Tier 0 — Pinned (instant recall, permanent)",
+            "Tier 1 — Session (recent context, expires with session)",
+            "Tier 2 — Semantic (vector search, relevance-managed)",
+            "Tier 3 — Organization (shared across teams)"
           ],
           "description": "Default memory tier for new memories"
         }

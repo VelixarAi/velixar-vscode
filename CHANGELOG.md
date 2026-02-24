@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 — 2026-02-24
+
+### Fixed
+- Default API URL now points to `api.velixarai.com` instead of raw gateway URL
+- Removed internal infrastructure names from tier descriptions
+
 ## 0.2.0 — 2026-02-22
 
 ### Added

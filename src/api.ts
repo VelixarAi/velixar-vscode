@@ -12,7 +12,7 @@ export class ApiClient {
   private get baseUrl(): string {
     return vscode.workspace
       .getConfiguration("velixar")
-      .get("apiUrl", "https://t4xrnwgo7f.execute-api.us-east-1.amazonaws.com/v1");
+      .get("apiUrl", "https://api.velixarai.com");
   }
 
   async getApiKey(): Promise<string | undefined> {

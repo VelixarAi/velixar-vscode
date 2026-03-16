@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { ApiClient } from "./api";
 import { MemoryTreeProvider } from "./providers/memoryTree";
 import { UsageTreeProvider } from "./providers/usageTree";
+import { RelevantMemoryProvider } from "./providers/relevantTree";
 import { SearchViewProvider } from "./views/searchView";
 import { registerCommands } from "./commands";
 
@@ -11,18 +12,20 @@ export function activate(context: vscode.ExtensionContext) {
   // Providers
   const memoryTree = new MemoryTreeProvider(api);
   const usageTree = new UsageTreeProvider(api);
+  const relevantTree = new RelevantMemoryProvider(api);
   const searchView = new SearchViewProvider(api, context.extensionUri);
 
   // Register tree views
   context.subscriptions.push(
     vscode.window.registerTreeDataProvider("velixar.memories", memoryTree),
     vscode.window.registerTreeDataProvider("velixar.usage", usageTree),
+    vscode.window.registerTreeDataProvider("velixar.relevant", relevantTree),
     vscode.window.registerWebviewViewProvider(SearchViewProvider.viewType, searchView)
   );
 
   // Register commands
   const refreshAll = async () => {
-    await Promise.all([memoryTree.refresh(), usageTree.refresh()]);
+    await Promise.all([memoryTree.refresh(), usageTree.refresh(), relevantTree.refresh()]);
   };
   registerCommands(context, api, refreshAll);
 

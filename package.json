@@ -1,8 +1,8 @@
 {
   "name": "velixar",
   "displayName": "Velixar AI Memory",
-  "description": "Persistent memory for AI assistants — browse, search, and manage memories from your IDE",
-  "version": "0.2.1",
+  "description": "Persistent memory for AI assistants \u2014 browse, search, and manage memories from your IDE",
+  "version": "0.3.0",
   "publisher": "VelixarAIInc",
   "icon": "media/icon.png",
   "repository": {
@@ -12,8 +12,20 @@
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["AI", "Machine Learning", "Other"],
-  "keywords": ["ai", "memory", "context", "velixar", "assistant", "org-memory", "agent"],
+  "categories": [
+    "AI",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "memory",
+    "context",
+    "velixar",
+    "assistant",
+    "org-memory",
+    "agent"
+  ],
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
@@ -40,6 +52,12 @@
           "id": "velixar.search",
           "name": "Search",
           "type": "webview"
+        },
+        {
+          "id": "velixar.relevant",
+          "name": "Relevant Memories",
+          "icon": "media/lightbulb.svg",
+          "contextualTitle": "Velixar Relevant"
         }
       ]
     },
@@ -131,12 +149,17 @@
         "velixar.defaultTier": {
           "type": "number",
           "default": 2,
-          "enum": [0, 1, 2, 3],
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
           "enumDescriptions": [
-            "Tier 0 — Pinned (instant recall, permanent)",
-            "Tier 1 — Session (recent context, expires with session)",
-            "Tier 2 — Semantic (vector search, relevance-managed)",
-            "Tier 3 — Organization (shared across teams)"
+            "Tier 0 \u2014 Pinned (instant recall, permanent)",
+            "Tier 1 \u2014 Session (recent context, expires with session)",
+            "Tier 2 \u2014 Semantic (vector search, relevance-managed)",
+            "Tier 3 \u2014 Organization (shared across teams)"
           ],
           "description": "Default memory tier for new memories"
         }
